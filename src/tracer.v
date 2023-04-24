@@ -16,10 +16,7 @@ module algofoogle_tracer(
     reg [5:-10]     operand;    // Q6.10 fixed-point operand.
     // reg [5:-10]     result;     // Reciprocal result.
     // assign io_out = result[5:-2];   // Output top 8 bits of the result, at all times.
-    assign io_out =
-        (step==5) ? reciprocal_out[ 5:-2 ] :
-        (step==0) ? reciprocal_out[-3:-10] :
-        0;
+    assign io_out = (step==5) ? reciprocal_out[ 5:-2 ] : reciprocal_out[-3:-10];
 
     wire            saturated;  // Unused here.
     wire [5:-10]    reciprocal_out;
