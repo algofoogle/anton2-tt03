@@ -6,6 +6,29 @@
 `timescale 1ns / 1ps
 
 
+function [4:0] lzc(input [15:0] data);
+    casex(data)
+        16'b0000000000000000:   lzc = 16;
+        16'b0000000000000001:   lzc = 15;
+        16'b000000000000001x:   lzc = 14;
+        16'b00000000000001xx:   lzc = 13;
+        16'b0000000000001xxx:   lzc = 12;
+        16'b000000000001xxxx:   lzc = 11;
+        16'b00000000001xxxxx:   lzc = 10;
+        16'b0000000001xxxxxx:   lzc = 9;
+        16'b000000001xxxxxxx:   lzc = 8;
+        16'b00000001xxxxxxxx:   lzc = 7;
+        16'b0000001xxxxxxxxx:   lzc = 6;
+        16'b000001xxxxxxxxxx:   lzc = 5;
+        16'b00001xxxxxxxxxxx:   lzc = 4;
+        16'b0001xxxxxxxxxxxx:   lzc = 3;
+        16'b001xxxxxxxxxxxxx:   lzc = 2;
+        16'b01xxxxxxxxxxxxxx:   lzc = 1;
+        default:                lzc = 0;
+    endcase
+endfunction
+
+
 module reciprocal(
     input   wire[15:0]  i_data,
     input   wire        i_abs,  // 1=we want the absolute value only.
@@ -45,24 +68,27 @@ module reciprocal(
     //SMELL: This was using https://github.com/ameetgohil/leading-zeroes-counter,
     // but because iverilog doesn't work properly with it (?) I've replaced it with
     // the following ugliness:
-    assign lzc_cnt =
-        unsigned_data[15: 0]==0 ? 16 :
-        unsigned_data[15: 1]==0 ? 15 :
-        unsigned_data[15: 2]==0 ? 14 :
-        unsigned_data[15: 3]==0 ? 13 :
-        unsigned_data[15: 4]==0 ? 12 :
-        unsigned_data[15: 5]==0 ? 11 :
-        unsigned_data[15: 6]==0 ? 10 :
-        unsigned_data[15: 7]==0 ?  9 :
-        unsigned_data[15: 8]==0 ?  8 :
-        unsigned_data[15: 9]==0 ?  7 :
-        unsigned_data[15:10]==0 ?  6 :
-        unsigned_data[15:11]==0 ?  5 :
-        unsigned_data[15:12]==0 ?  4 :
-        unsigned_data[15:13]==0 ?  3 :
-        unsigned_data[15:14]==0 ?  2 :
-        unsigned_data[15:15]==0 ?  1 :
-                                   0;
+
+    assign lzc_cnt = lzc(unsigned_data);
+
+    // assign lzc_cnt =
+    //     unsigned_data[15: 0]==0 ? 16 :
+    //     unsigned_data[15: 1]==0 ? 15 :
+    //     unsigned_data[15: 2]==0 ? 14 :
+    //     unsigned_data[15: 3]==0 ? 13 :
+    //     unsigned_data[15: 4]==0 ? 12 :
+    //     unsigned_data[15: 5]==0 ? 11 :
+    //     unsigned_data[15: 6]==0 ? 10 :
+    //     unsigned_data[15: 7]==0 ?  9 :
+    //     unsigned_data[15: 8]==0 ?  8 :
+    //     unsigned_data[15: 9]==0 ?  7 :
+    //     unsigned_data[15:10]==0 ?  6 :
+    //     unsigned_data[15:11]==0 ?  5 :
+    //     unsigned_data[15:12]==0 ?  4 :
+    //     unsigned_data[15:13]==0 ?  3 :
+    //     unsigned_data[15:14]==0 ?  2 :
+    //     unsigned_data[15:15]==0 ?  1 :
+    //                                0;
 
     assign rescale_lzc = $signed(M) - $signed(lzc_cnt);
 

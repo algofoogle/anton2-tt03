@@ -33,14 +33,14 @@ module algofoogle_tracer(
     always @(posedge clk) begin
         if (reset) begin
             step <= 0;
-            operand <= 0;
+            // operand <= 0;
             // result <= 0;
         end else begin
             //NOTE: Could probably change this state machine to start
             // producing output on the same step as the final nibble
             // loading, but I'm keeping it this way because I might
             // have other steps in a more complicated design later.
-            if (step < 4) begin
+            if (!step[2]) begin // if (step < 4)
                 operand <= {operand[1:-10], i_data};
             // end else if (step == 4) begin
             //     result <= reciprocal_out;
