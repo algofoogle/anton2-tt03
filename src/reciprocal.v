@@ -52,7 +52,7 @@ module reciprocal(
 
     wire [4:0]   lzc_cnt, rescale_lzc;
     wire [15:0]  a, b, d, f, reci, sat_data, scale_data;
-    wire [31:0]  rescale_data;
+    // wire [31:0]  rescale_data;
     wire         sign;   // Does this need to be a reg? Shouldn't it be a wire?
     wire [15:0]  unsigned_data;
 
@@ -109,14 +109,17 @@ module reciprocal(
 
     assign f = e[25:10];
 
-    assign reci = |f[15:14] ? 16'h7FFF : f << 2; //saturation detection and (e*4)
+    //SMELL: I had to disable saturation detection to get this to fit in TT03.
+    //assign reci = |f[15:14] ? 16'h7FFF : f << 2; //saturation detection and (e*4)
+    assign reci = f << 2; // e*4
 
     //rescale reci to by the lzc factor
 
-    assign rescale_data = rescale_lzc[4] ? {16'b0,reci} << (~rescale_lzc + 1'b1) : {16'b0,reci} >> rescale_lzc;
+    // assign rescale_data = rescale_lzc[4] ? {16'b0,reci} << (~rescale_lzc + 1'b1) : {16'b0,reci} >> rescale_lzc;
 
-    //Saturation logic
-    assign sat_data = |rescale_data[31:15] ? 16'h7FFF : rescale_data[15:0];
+    //Saturation logic DISABLED for fit in TT03.
+    // assign sat_data = |rescale_data[31:15] ? 16'h7FFF : rescale_data[15:0];
+    assign sat_data = rescale_lzc[4] ? reci << (~rescale_lzc + 1'b1) : reci >> rescale_lzc;
 
     assign o_data = sign ? (~sat_data + 1'b1) : sat_data;
 

@@ -36,6 +36,9 @@ documentation:
       but I'm planning on using it as part of a
       [ray caster in Verilog](https://github.com/algofoogle/raybox).
 
+      WARNING: The original method has been modified to disable saturation
+      logic, to help fit the design in TT03.
+
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
       After synchronous reset, each of 4 clock rising edges will load
