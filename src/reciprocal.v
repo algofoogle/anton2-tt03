@@ -27,14 +27,14 @@ module reciprocal(
     output = e * 4;
     */
 
-    reg [4:0]   lzc_cnt, rescale_lzc;
-    reg [15:0]  a, b, d, f, reci, sat_data, scale_data;
-    reg [31:0]  rescale_data;
-    reg         sign;   // Does this need to be a reg? Shouldn't it be a wire?
-    reg [15:0]  unsigned_data;
+    wire [4:0]   lzc_cnt, rescale_lzc;
+    wire [15:0]  a, b, d, f, reci, sat_data, scale_data;
+    wire [31:0]  rescale_data;
+    wire         sign;   // Does this need to be a reg? Shouldn't it be a wire?
+    wire [15:0]  unsigned_data;
 
     /* verilator lint_off UNUSED */
-    reg [31:0]  c, e;
+    wire [31:0]  c, e;
     /* verilator lint_on UNUSED */
 
     assign sign = i_data[15];
