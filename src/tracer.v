@@ -14,8 +14,12 @@ module algofoogle_tracer(
 
     reg [2:0]       step;       // Nibbles in/out counter.
     reg [5:-10]     operand;    // Q6.10 fixed-point operand.
-    reg [5:-10]     result;     // Reciprocal result.
-    assign io_out = result[5:-2];   // Output top 8 bits of the result, at all times.
+    // reg [5:-10]     result;     // Reciprocal result.
+    // assign io_out = result[5:-2];   // Output top 8 bits of the result, at all times.
+    assign io_out =
+        (step==5) ? reciprocal_out[ 5:-2 ] :
+        (step==0) ? reciprocal_out[-3:-10] :
+        0;
 
     wire            saturated;  // Unused here.
     wire [5:-10]    reciprocal_out;
@@ -31,7 +35,7 @@ module algofoogle_tracer(
         if (reset) begin
             step <= 0;
             operand <= 0;
-            result <= 0;
+            // result <= 0;
         end else begin
             //NOTE: Could probably change this state machine to start
             // producing output on the same step as the final nibble
@@ -39,10 +43,10 @@ module algofoogle_tracer(
             // have other steps in a more complicated design later.
             if (step < 4) begin
                 operand <= {operand[1:-10], i_data};
-            end else if (step == 4) begin
-                result <= reciprocal_out;
-            end else if (step == 5) begin
-                result <= result << 8;
+            // end else if (step == 4) begin
+            //     result <= reciprocal_out;
+            // end else if (step == 5) begin
+            //     result <= result << 8;
             end
             step <= (step==5) ? 0 : step + 1;
         end
