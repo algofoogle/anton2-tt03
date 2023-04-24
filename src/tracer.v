@@ -9,7 +9,7 @@ module algofoogle_tracer(
 );
     wire            clk     = io_in[0];
     wire            reset   = io_in[1];
-    wire            abs     = io_in[2];
+    // wire            abs     = io_in[2];
     wire [3:0]      i_data  = io_in[7:4];
 
     reg [2:0]       step;       // Nibbles in/out counter.
@@ -21,13 +21,13 @@ module algofoogle_tracer(
         done ?  reciprocal_out[ 5:-2 ] :
                 reciprocal_out[-3:-10];
 
-    wire            saturated;  // Unused here.
+    // wire            saturated;  // Unused here.
     wire [5:-10]    reciprocal_out;
 
     reciprocal reciprocal(
         .i_data (operand),
-        .i_abs  (abs),
-        .o_sat  (saturated),
+        // .i_abs  (abs),
+        // .o_sat  (saturated),
         .o_data (reciprocal_out)
     );
 

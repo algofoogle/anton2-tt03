@@ -28,8 +28,7 @@ documentation:
       This approximates the reciprocal of a 16-bit fixed-point input,
       in [Q6.10 format](https://en.wikipedia.org/wiki/Q_(number_format)),
       from data clocked in as 4 nibbles, and then the result clocked out
-      as 2 bytes (also a Q6.10 number). It optionally has an "absolute"
-      (`abs`) mode.
+      as 2 bytes (also a Q6.10 number).
 
       I didn't come up with this method, or much of this code
       (see [original code](https://github.com/ameetgohil/reciprocal-sv/blob/master/rtl/reciprocal.sv)
@@ -45,13 +44,11 @@ documentation:
       the upper 8-bits of the Q6.10 result at `result[7:0]`, followed by the lower 8-bits
       on the 6th clock. The process then repeats with the 7th clock onwards.
 
-      Optionally keep the `abs` signal high if you want the absolute of the result.
-
 # A description of what the inputs do
   inputs:               
     - clock
     - reset
-    - abs
+    - none
     - none
     - i_data[0]
     - i_data[1]

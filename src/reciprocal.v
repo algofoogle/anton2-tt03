@@ -31,9 +31,9 @@ endfunction
 
 module reciprocal(
     input   wire[15:0]  i_data,
-    input   wire        i_abs,  // 1=we want the absolute value only.
-    output  wire[15:0]  o_data,
-    output  wire        o_sat   // 1=saturated
+    // input   wire        i_abs,  // 1=we want the absolute value only.
+    // output  wire        o_sat   // 1=saturated
+    output  wire[15:0]  o_data
 );
 
     //QM.N M= 6, N= 10
@@ -116,9 +116,8 @@ module reciprocal(
     assign rescale_data = rescale_lzc[4] ? {16'b0,reci} << (~rescale_lzc + 1'b1) : {16'b0,reci} >> rescale_lzc;
 
     //Saturation logic
-    assign o_sat = |rescale_data[31:15];
-    assign sat_data = o_sat ? 16'h7FFF : rescale_data[15:0];
+    assign sat_data = |rescale_data[31:15] ? 16'h7FFF : rescale_data[15:0];
 
-    assign o_data = (sign && !i_abs) ? (~sat_data + 1'b1) : sat_data;
+    assign o_data = sign ? (~sat_data + 1'b1) : sat_data;
 
 endmodule
